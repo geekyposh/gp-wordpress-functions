@@ -3,10 +3,11 @@
 	Plugin Name: Geeky Posh's Functionality Plugin
 	Description: All of the important functionality of your site belongs in this.
 	Version: 0.1
-	License: GPL
+	License: MIT
 	Author: Jenny Wu
 	Author URI: http://www.geekyposh.com
 	*/
+
 //removes automatic placement of jetpack related posts
 function jetpackme_remove_rp() {
 	$jprp = Jetpack_RelatedPosts::init();
@@ -14,12 +15,11 @@ function jetpackme_remove_rp() {
 	remove_filter( 'the_content', $callback, 40 );
 }
 
-	//remove sponsored category from appearing in jetpack related posts
+//remove sponsored category from appearing in jetpack related posts
 function jetpackme_filter_exclude_category( $filters ) {
 	$filters[] = array( 'not' => array( 'term' => array( 'category.slug' => 'holiday',  'category.slug' => 'stuff') ) );
 	return $filters;
 }
-
 
 /** admin stuff **/
 function gp_add_tinymce_plugin($plugin_array) {
@@ -33,13 +33,12 @@ function gp_register_my_tc_button($buttons) {
 function gp_tc_css() {
 	wp_enqueue_style('gp-tc', plugins_url('/style.css', __FILE__));
 }
-
 function my_mce_buttons_2( $buttons ) {
 	array_unshift( $buttons, 'styleselect' );
 	return $buttons;
 }
 
-//adds the custom styles to the stylesect dropdown
+//adds the custom styles to the editor dropdown
 function my_mce_before_init_insert_formats( $init_array ) {  
 	$style_formats = array(  
 		array(  
@@ -103,27 +102,12 @@ function my_mce_before_init_insert_formats( $init_array ) {
 			'classes' => 'list',
 			'wrapper' => true,
 			),
-		//old footnotes stuff, not longer using this
-		/**array(  
-			'title' => 'ol-footnotes',  
-			'selector' => 'ol',
-			'classes' => 'footnotes',
-			'wrapper' => true,
-			),
-		array(  
-			'title' => 'footnote',  
-			'selector' => 'a',
-			'attributes' => array(
-        		'rel' => 'footnote',
-        	),
-			'wrapper' => false,
-			'exact' => true,
-			),**/
 		);  
 	$init_array['style_formats'] = json_encode( $style_formats );  
 	return $init_array;  
 } 
 
+//add some additional fields to the post screen
 function admin_init(){
 	add_meta_box("product-meta", "Product Details", "product_details", "post", "normal", "default");
 	add_meta_box("disclaimer", "Disclaimer", "disclaimer", "post", "side", "default");
@@ -184,6 +168,7 @@ function disclaimer(){
 	$disclaimer = $custom["disclaimer"][0];
 	echo '<textarea name="disclaimer" style="width:100%;height:150px;">' . esc_attr($disclaimer).'</textarea>';
 }
+//save all the details!
 function save_details(){
 	global $post;
 	update_post_meta($post -> ID, "is_hg", $_POST["is_hg"]);    
@@ -192,7 +177,6 @@ function save_details(){
 	update_post_meta($post -> ID, "brand_name", $_POST["brand_name"]);
 	update_post_meta($post -> ID, "pinterest_image", $_POST["pinterest_image"]);
 	update_post_meta($post -> ID, "disclaimer", $_POST["disclaimer"]);
-
 }
 
 //add instagram post type
@@ -213,6 +197,7 @@ function instagram_register() {
 	register_post_type( 'instagram' , $args );
 }
 
+//cleaning up things I don't need...use at your own risk
 function jquery_cleanup() {
 	remove_action('rest_api_init', 'wp_oembed_register_route');
 	remove_filter('oembed_dataparse', 'wp_filter_oembed_result', 10);
@@ -267,6 +252,7 @@ function gp_cleanup_scripts(){
 		wp_dequeue_script('epoch');
 	}
 }
+//adding my own stuff
 function gp_enqueue_scripts() {
 	wp_register_script( 'cj', '//www.yceml.net/am_gen/7606162/include/allCj/am.js',false, null, true);
 	wp_register_style( 'gp-default-style', get_template_directory_uri() . '/style.css',false, false);
@@ -275,17 +261,17 @@ function gp_enqueue_scripts() {
 		wp_enqueue_script('cj');
 	}
 }
-
-function remove_head_scripts() { 
-	
-} 
-
+//setting up a new feed
 function customRSS(){
 	add_feed('mailchimp', 'customRSSFunc');
 }
 function customRSSFunc(){
 	get_template_part('rss', 'mailchimp');
 }
+function reinsert_rss_feed() {
+    echo '<link rel="alternate" type="application/rss+xml" title="' . get_bloginfo('sitename') . ' &raquo; RSS Feed" href="' . get_bloginfo('rss2_url') . '" />';
+}
+//make sure the featured image gets added to the feed
 function featuredtoRSS($content) {
 	global $post;
 	if ( has_post_thumbnail( $post->ID ) ){
@@ -310,8 +296,7 @@ function fix_multisite_srcset( $sources ){
 	return $sources;
 }
 
-function add_itemprop_image_markup($content)
-{
+function add_itemprop_image_markup($content){
     //Replace the instance with the itemprop image markup.
     $string = '<img';
     $replace = '<img itemprop="image"';
@@ -319,6 +304,7 @@ function add_itemprop_image_markup($content)
     return $content;
 }
 
+//the default image caption shortcode output was annoying
 function fixed_img_caption_shortcode($attr, $content = null) {
 	if ( ! isset( $attr['caption'] ) ) {
 		if ( preg_match( '#((?:<a [^>]+>s*)?<img [^>]+>(?:s*</a>)?)(.*)#is', $content, $matches ) ) {
@@ -371,10 +357,6 @@ function ingredients_init() {
 			'rewrite' => array( 'slug' => 'ingredients', 'with_front' => true)
 			)
 		);
-}
-
-function reinsert_rss_feed() {
-    echo '<link rel="alternate" type="application/rss+xml" title="' . get_bloginfo('sitename') . ' &raquo; RSS Feed" href="' . get_bloginfo('rss2_url') . '" />';
 }
 
 /** hock it up~ **/
