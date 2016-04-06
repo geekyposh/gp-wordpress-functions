@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?php
 	/*
 	Plugin Name: Geeky Posh's Functionality Plugin
@@ -679,10 +678,6 @@ function gp_enqueue_scripts() {
 	}
 }
 
-function remove_head_scripts() { 
-	
-} 
-
 function customRSS(){
 	add_feed('mailchimp', 'customRSSFunc');
 }
@@ -695,6 +690,9 @@ function featuredtoRSS($content) {
 		$content = '<div>' . get_the_post_thumbnail( $post->ID, 'large', array( 'style' => 'margin-bottom: 15px;' ) ) . '</div>' . $content;
 	}
 	return $content;
+}
+function reinsert_rss_feed() {
+    echo '<link rel="alternate" type="application/rss+xml" title="' . get_bloginfo('sitename') . ' &raquo; RSS Feed" href="' . get_bloginfo('rss2_url') . '" />';
 }
 
 function new_excerpt_length($length) {
@@ -713,8 +711,7 @@ function fix_multisite_srcset( $sources ){
 	return $sources;
 }
 
-function add_itemprop_image_markup($content)
-{
+function add_itemprop_image_markup($content){
     //Replace the instance with the itemprop image markup.
     $string = '<img';
     $replace = '<img itemprop="image"';
@@ -776,9 +773,6 @@ function ingredients_init() {
 		);
 }
 
-function reinsert_rss_feed() {
-    echo '<link rel="alternate" type="application/rss+xml" title="' . get_bloginfo('sitename') . ' &raquo; RSS Feed" href="' . get_bloginfo('rss2_url') . '" />';
-}
 
 /** hock it up~ **/
 remove_action('wp_head', 'wp_generator'); 
@@ -820,5 +814,4 @@ if (!is_admin()){
 	add_action('init', 'jquery_cleanup'); 
 	
 }
->>>>>>> d20408ae39f14e175707913131f43f8f27fd6476
 ?>

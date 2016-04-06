@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 (function() {
     tinymce.PluginManager.add('gp_tc_button', function( editor, url ) {
         editor.addButton( 'gp_tc_button', {
@@ -66,5 +65,4 @@
            ]
         });
     });
->>>>>>> d20408ae39f14e175707913131f43f8f27fd6476
 })();
