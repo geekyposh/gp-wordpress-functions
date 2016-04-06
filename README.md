@@ -12,7 +12,8 @@ Feel free to use any of the functionalities for your own blog or suggest any imp
 ***
 
 ###### find me at
-Blog - [Geeky Posh](http://www.geekyposh.com)
-Twitter - [@geekyposhe](http://www.twitter.com/geekyposhe)
-Dribbble - [@geekyposh](http://www.dribbble.com/geekyposh)
-Instagram - [@ariesness](http://www.instagram.com/ariesness)
+- Blog - [Geeky Posh](http://www.geekyposh.com)
+- Twitter - [@geekyposhe](http://www.twitter.com/geekyposhe)
+- Dribbble - [@geekyposh](http://www.dribbble.com/geekyposh)
+- Instagram - [@ariesness](http://www.instagram.com/ariesness)
+- Pinterest - [@geekyposh](http://www.pinterest.com/pinterest)
