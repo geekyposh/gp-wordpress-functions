@@ -398,6 +398,11 @@ function gp_custom_query( $query ) {
     		$query->set( 'meta_key', 'hide_rss');
     		$query->set( 'meta_compare', 'NOT EXISTS');
     	}
+    	if($query->is_search()){
+    		$query->set( 'cat', '-62550,-53');
+    		$query->set( 'posts_per_page', 21);
+    		$query->set( 'post_type', 'post');
+    	}
     }
 }
 /** hock it up~ **/
@@ -426,6 +431,7 @@ add_action( 'wp_enqueue_scripts', 'gp_enqueue_scripts', 1);
 add_action( 'wp_enqueue_scripts', 'gp_cleanup_scripts', 99);
 add_action( 'wp_head', 'reinsert_rss_feed');
 add_filter('excerpt_length', 'new_excerpt_length');
+add_filter('login_errors',create_function('$a', "return null;"));
 add_filter( 'jetpack_implode_frontend_css', '__return_false' );
 add_filter( 'jetpack_relatedposts_filter_filters', 'jetpackme_filter_exclude_category' );
 add_filter( 'jetpack_relatedposts_filter_post_context', '__return_empty_string' );
