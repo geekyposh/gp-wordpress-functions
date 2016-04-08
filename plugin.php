@@ -282,12 +282,12 @@ function gp_enqueue_scripts() {
 	}
 }
 //setting up a new feed
-function customRSS(){
+/*function customRSS(){
 	add_feed('mailchimp', 'customRSSFunc');
 }
 function customRSSFunc(){
 	get_template_part('rss', 'mailchimp');
-}
+}*/
 function reinsert_rss_feed() {
     echo '<link rel="alternate" type="application/rss+xml" title="' . get_bloginfo('sitename') . ' &raquo; RSS Feed" href="' . get_bloginfo('rss2_url') . '" />';
 }
@@ -378,7 +378,13 @@ function ingredients_init() {
 			)
 		);
 }
-
+function gp_feed_rss2($for_comments) {
+    $rss_template = get_template_directory() . '/rss.php';
+    if(file_exists( $rss_template ))
+        load_template( $rss_template );
+    else
+        do_feed_rss2( $for_comments ); // Call default function
+}
 /** hock it up~ **/
 remove_action('wp_head', 'wp_generator'); 
 remove_action('wp_head', 'feed_links_extra', 3 );
@@ -391,12 +397,13 @@ remove_action('wp_head', 'start_post_rel_link', 10, 0 );
 remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
 remove_action('wp_head', 'print_emoji_detection_script', 7);
 remove_action('wp_print_styles', 'print_emoji_styles');
+remove_all_actions( 'do_feed_rss2' );
 add_shortcode( 'wp_caption', 'fixed_img_caption_shortcode' );
 add_shortcode( 'caption', 'fixed_img_caption_shortcode' );
 add_action('admin_enqueue_scripts', 'gp_tc_css');
 add_action('admin_head', 'admin_init');
+add_action( 'do_feed_rss2', 'gp_feed_rss2', 10, 1 );
 add_action('init', 'instagram_register');
-add_action('init', 'customRSS');
 add_action('init', 'ingredients_init' );
 add_action('save_post', 'save_details');
 add_action( 'wp_enqueue_scripts', 'gp_enqueue_scripts', 1);
