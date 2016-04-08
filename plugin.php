@@ -189,14 +189,16 @@ function hide_post(){
 //save all the details!
 function save_details(){
 	global $post;
-	update_post_meta($post -> ID, "is_hg", $_POST["is_hg"]);    
+	update_post_meta($post -> ID, "is_hg", $_POST["is_hg"]);  
 	update_post_meta($post -> ID, "product_name", $_POST["product_name"]);
 	update_post_meta($post -> ID, "product_cat", $_POST["product_cat"]);
 	update_post_meta($post -> ID, "brand_name", $_POST["brand_name"]);
 	update_post_meta($post -> ID, "pinterest_image", $_POST["pinterest_image"]);
 	update_post_meta($post -> ID, "disclaimer", $_POST["disclaimer"]);
-	update_post_meta($post -> ID, "hide_home", $_POST["hide_home"]);
-	update_post_meta($post -> ID, "hide_rss", $_POST["hide_rss"]);
+	if(isset($_POST["hide_home"]))
+		update_post_meta($post -> ID, "hide_home", $_POST["hide_home"]);
+	if(isset($_POST["hide_rss"]))
+		update_post_meta($post -> ID, "hide_rss", $_POST["hide_rss"]);
 }
 
 //add instagram post type
@@ -281,13 +283,7 @@ function gp_enqueue_scripts() {
 		wp_enqueue_script('cj');
 	}
 }
-//setting up a new feed
-/*function customRSS(){
-	add_feed('mailchimp', 'customRSSFunc');
-}
-function customRSSFunc(){
-	get_template_part('rss', 'mailchimp');
-}*/
+
 function reinsert_rss_feed() {
     echo '<link rel="alternate" type="application/rss+xml" title="' . get_bloginfo('sitename') . ' &raquo; RSS Feed" href="' . get_bloginfo('rss2_url') . '" />';
 }
@@ -385,6 +381,25 @@ function gp_feed_rss2($for_comments) {
     else
         do_feed_rss2( $for_comments ); // Call default function
 }
+
+function gp_custom_query( $query ) {
+    if ($query->is_main_query() ) {
+    	if($query->is_home()){
+    		$query->set( 'cat', '-62550');
+    		$query->set( 'meta_key', 'hide_home');
+    		$query->set( 'meta_compare', 'NOT EXISTS');
+    	}
+    	if($query->is_archive()){
+    		$query->set( 'cat', '-62550');
+    		$query->set( 'posts_per_page', 21);
+    	}
+    	if($query->is_feed()){
+    		$query->set( 'cat', '-62550,-53');
+    		$query->set( 'meta_key', 'hide_rss');
+    		$query->set( 'meta_compare', 'NOT EXISTS');
+    	}
+    }
+}
 /** hock it up~ **/
 remove_action('wp_head', 'wp_generator'); 
 remove_action('wp_head', 'feed_links_extra', 3 );
@@ -405,6 +420,7 @@ add_action('admin_head', 'admin_init');
 add_action( 'do_feed_rss2', 'gp_feed_rss2', 10, 1 );
 add_action('init', 'instagram_register');
 add_action('init', 'ingredients_init' );
+add_action( 'pre_get_posts', 'gp_custom_query', 1 );
 add_action('save_post', 'save_details');
 add_action( 'wp_enqueue_scripts', 'gp_enqueue_scripts', 1);
 add_action( 'wp_enqueue_scripts', 'gp_cleanup_scripts', 99);
