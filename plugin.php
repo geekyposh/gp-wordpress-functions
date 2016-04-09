@@ -405,6 +405,19 @@ function gp_custom_query( $query ) {
     	}
     }
 }
+function my_nofollow($content) {
+    return preg_replace_callback('/<a[^>]+/', 'my_nofollow_callback', $content);
+}
+function my_nofollow_callback($matches) {
+    $link = $matches[0];
+    $site_link = get_bloginfo('url');
+    if (strpos($link, 'rel') === false) {
+        $link = preg_replace("%(href=\S(?!$site_link))%i", 'rel="nofollow" $1', $link);
+    } elseif (preg_match("%href=\S(?!$site_link)%i", $link)) {
+        $link = preg_replace('/rel=\S(?!nofollow)\S*/i', 'rel="nofollow"', $link);
+    }
+    return $link;
+}
 /** hock it up~ **/
 remove_action('wp_head', 'wp_generator'); 
 remove_action('wp_head', 'feed_links_extra', 3 );
@@ -438,6 +451,8 @@ add_filter( 'jetpack_relatedposts_filter_post_context', '__return_empty_string' 
 add_filter('mce_buttons_2', 'my_mce_buttons_2');
 add_filter( 'show_admin_bar', '__return_false');
 add_filter('the_content', 'add_itemprop_image_markup', 2);
+add_filter('the_content', 'my_nofollow');
+add_filter('the_excerpt', 'my_nofollow');
 add_filter('the_content_feed', 'featuredtoRSS');
 add_filter('the_excerpt_rss', 'featuredtoRSS');
 add_filter( 'tiny_mce_before_init', 'my_mce_before_init_insert_formats' ); 
