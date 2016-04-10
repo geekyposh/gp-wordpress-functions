@@ -469,6 +469,7 @@ add_filter( 'jetpack_implode_frontend_css', '__return_false' );
 add_filter( 'jetpack_relatedposts_filter_filters', 'jetpackme_filter_exclude_category' );
 add_filter( 'jetpack_relatedposts_filter_post_context', '__return_empty_string' );
 add_filter('mce_buttons_2', 'my_mce_buttons_2');
+add_filter( 'pre_option_link_manager_enabled', '__return_true' );
 add_filter( 'show_admin_bar', '__return_false');
 add_filter('the_content', 'add_itemprop_image_markup', 2);
 add_filter('the_content', 'my_nofollow');
