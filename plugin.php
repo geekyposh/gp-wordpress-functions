@@ -418,6 +418,22 @@ function my_nofollow_callback($matches) {
     }
     return $link;
 }
+function rtp_rssv_scripts() {
+    global $wp_scripts;
+    if (!is_a($wp_scripts, 'WP_Scripts'))
+        return;
+    foreach ($wp_scripts->registered as $handle => $script)
+        $wp_scripts->registered[$handle]->ver = null;
+}
+
+function rtp_rssv_styles() {
+    global $wp_styles;
+    if (!is_a($wp_styles, 'WP_Styles'))
+        return;
+    foreach ($wp_styles->registered as $handle => $style)
+        $wp_styles->registered[$handle]->ver = null;
+}
+
 /** hock it up~ **/
 remove_action('wp_head', 'wp_generator'); 
 remove_action('wp_head', 'feed_links_extra', 3 );
@@ -443,6 +459,10 @@ add_action('save_post', 'save_details');
 add_action( 'wp_enqueue_scripts', 'gp_enqueue_scripts', 1);
 add_action( 'wp_enqueue_scripts', 'gp_cleanup_scripts', 99);
 add_action( 'wp_head', 'reinsert_rss_feed');
+add_action('wp_print_scripts', 'rtp_rssv_scripts', 999);
+add_action('wp_print_footer_scripts', 'rtp_rssv_scripts', 999);
+add_action('admin_print_styles', 'rtp_rssv_styles', 999);
+add_action('wp_print_styles', 'rtp_rssv_styles', 999);
 add_filter('excerpt_length', 'new_excerpt_length');
 add_filter('login_errors',create_function('$a', "return null;"));
 add_filter( 'jetpack_implode_frontend_css', '__return_false' );
