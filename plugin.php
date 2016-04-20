@@ -9,236 +9,236 @@
 	*/
 
 //removes automatic placement of jetpack related posts
-function jetpackme_remove_rp() {
-	$jprp = Jetpack_RelatedPosts::init();
-	$callback = array( $jprp, 'filter_add_target_to_dom' );
-	remove_filter( 'the_content', $callback, 40 );
-}
+	function jetpackme_remove_rp() {
+		$jprp = Jetpack_RelatedPosts::init();
+		$callback = array( $jprp, 'filter_add_target_to_dom' );
+		remove_filter( 'the_content', $callback, 40 );
+	}
 
 //remove sponsored category from appearing in jetpack related posts
-function jetpackme_filter_exclude_category( $filters ) {
-	$filters[] = array( 'not' => array( 'term' => array( 'category.slug' => 'holiday',  'category.slug' => 'stuff') ) );
-	return $filters;
-}
+	function jetpackme_filter_exclude_category( $filters ) {
+		$filters[] = array( 'not' => array( 'term' => array( 'category.slug' => 'holiday',  'category.slug' => 'stuff') ) );
+		return $filters;
+	}
 
-/** admin stuff **/
-function gp_add_tinymce_plugin($plugin_array) {
-	$plugin_array['gp_tc_button'] = plugins_url( '/emoji-button.js', __FILE__ );
-	return $plugin_array;
-}
-function gp_register_my_tc_button($buttons) {
-	array_push($buttons, "gp_tc_button");
-	return $buttons;
-}
-function gp_tc_css() {
-	wp_enqueue_style('gp-tc', plugins_url('/style.css', __FILE__));
-}
-function my_mce_buttons_2( $buttons ) {
-	array_unshift( $buttons, 'styleselect' );
-	return $buttons;
-}
+	/** admin stuff **/
+	function gp_add_tinymce_plugin($plugin_array) {
+		$plugin_array['gp_tc_button'] = plugins_url( '/emoji-button.js', __FILE__ );
+		return $plugin_array;
+	}
+	function gp_register_my_tc_button($buttons) {
+		array_push($buttons, "gp_tc_button");
+		return $buttons;
+	}
+	function gp_tc_css() {
+		wp_enqueue_style('gp-tc', plugins_url('/style.css', __FILE__));
+	}
+	function my_mce_buttons_2( $buttons ) {
+		array_unshift( $buttons, 'styleselect' );
+		return $buttons;
+	}
 
 //adds the custom styles to the editor dropdown
-function my_mce_before_init_insert_formats( $init_array ) {  
-	$style_formats = array(  
-		array(  
-			'title' => '.underline',  
-			'inline' => 'span',  
-			'classes' => 'underline',
-			'wrapper' => false,
-			),  
-		array(  
-			'title' => 'tooltip',  
-			'inline' => 'span',  
-			'classes' => 'tooltip',
-			'wrapper' => false,
-			),
-		array(  
-			'title' => 'good',  
-			'inline' => 'span',  
-			'classes' => 'good',
-			'wrapper' => false,
-			),
-		array(  
-			'title' => 'questionable',  
-			'inline' => 'span',  
-			'classes' => 'questionable',
-			'wrapper' => false,
-			),
-		array(  
-			'title' => 'bad',  
-			'inline' => 'span',  
-			'classes' => 'bad',
-			'wrapper' => false,
-			),
-		array(  
-			'title' => 'small',  
-			'inline' => 'small',
-			'wrapper' => false,
-			),
-		array(  
-			'title' => 'inline code',  
-			'inline' => 'code',
-			'wrapper' => false,
-			),
-		array(  
-			'title' => 'definition',  
-			'block' => 'dl',
-			'wrapper' => true,
-			),
-		array(  
-			'title' => 'definition term',  
-			'inline' => 'dt',
-			'wrapper' => false,
-			),
-		array(  
-			'title' => 'definition description',  
-			'inline' => 'dd',
-			'wrapper' => false,
-			),
-		array(  
-			'title' => 'ol-numbers',  
-			'selector' => 'ol',
-			'classes' => 'list',
-			'wrapper' => true,
-			),
-		);  
-	$init_array['style_formats'] = json_encode( $style_formats );  
-	return $init_array;  
-} 
+	function my_mce_before_init_insert_formats( $init_array ) {  
+		$style_formats = array(  
+			array(  
+				'title' => '.underline',  
+				'inline' => 'span',  
+				'classes' => 'underline',
+				'wrapper' => false,
+				),  
+			array(  
+				'title' => 'tooltip',  
+				'inline' => 'span',  
+				'classes' => 'tooltip',
+				'wrapper' => false,
+				),
+			array(  
+				'title' => 'good',  
+				'inline' => 'span',  
+				'classes' => 'good',
+				'wrapper' => false,
+				),
+			array(  
+				'title' => 'questionable',  
+				'inline' => 'span',  
+				'classes' => 'questionable',
+				'wrapper' => false,
+				),
+			array(  
+				'title' => 'bad',  
+				'inline' => 'span',  
+				'classes' => 'bad',
+				'wrapper' => false,
+				),
+			array(  
+				'title' => 'small',  
+				'inline' => 'small',
+				'wrapper' => false,
+				),
+			array(  
+				'title' => 'inline code',  
+				'inline' => 'code',
+				'wrapper' => false,
+				),
+			array(  
+				'title' => 'definition',  
+				'block' => 'dl',
+				'wrapper' => true,
+				),
+			array(  
+				'title' => 'definition term',  
+				'inline' => 'dt',
+				'wrapper' => false,
+				),
+			array(  
+				'title' => 'definition description',  
+				'inline' => 'dd',
+				'wrapper' => false,
+				),
+			array(  
+				'title' => 'ol-numbers',  
+				'selector' => 'ol',
+				'classes' => 'list',
+				'wrapper' => true,
+				),
+			);  
+		$init_array['style_formats'] = json_encode( $style_formats );  
+		return $init_array;  
+	} 
 
 //add some additional fields to the post screen
-function admin_init(){
-	add_meta_box("product-meta", "Product Details", "product_details", "post", "normal", "default");
-	add_meta_box("disclaimer", "Disclaimer", "disclaimer", "post", "side", "default");
-	add_meta_box("pinterest-meta", "Pinterest Image", "pinterest_image", "post", "side", "default");
-	add_meta_box("hide-meta", "Hide Post?", "hide_post", "post", "side", "high");
-	add_editor_style( 'editor-style.css' );
+	function admin_init(){
+		add_meta_box("product-meta", "Product Details", "product_details", "post", "normal", "default");
+		add_meta_box("disclaimer", "Disclaimer", "disclaimer", "post", "side", "default");
+		add_meta_box("pinterest-meta", "Pinterest Image", "pinterest_image", "post", "side", "default");
+		add_meta_box("hide-meta", "Hide Post?", "hide_post", "post", "side", "high");
+		add_editor_style( 'editor-style.css' );
 
-	global $typenow;
-	if ( !current_user_can('edit_posts') && !current_user_can('edit_pages') ) {
-		return;
-	}
-	if( ! in_array( $typenow, array( 'post', 'page' ) ) ){
-		return;
-	}
-	if ( get_user_option('rich_editing') == 'true') {
-		add_filter("mce_external_plugins", "gp_add_tinymce_plugin");
-		add_filter('mce_buttons', 'gp_register_my_tc_button');
-	}
-}
-
-function product_details(){
-	global $post;
-	$custom = get_post_custom($post-> ID);
-	$product_name = $custom["product_name"][0];
-	$brand_name = $custom["brand_name"][0];
-	$is_hg = $custom["is_hg"][0];
-	echo '<p class="wp-review-field"><label>Brand Name: </label><input type="text" name="brand_name" value="' . esc_attr($brand_name).'" size="50"></p>';
-	echo '<p class="wp-review-field"><label>Product Name: </label><input type="text" name="product_name" value="' . esc_attr($product_name).'" size="50"></p>';
-	echo '<p class="wp-review-field"><label>Product Category: </label><select name="product_cat">'; 
-                    $option_values = array('','Cleanser','Toner', 'First Essence', 'Serum', 'Oil', 'Exfoliant', 'Moisturizer', 'Mask','Lip Balm','Foundation','Primer','Concealer','Eyeshadow','Eyeliner','Mascara','Blush','Highlighter','Lipstick','Shampoo','Conditioner','Leave-in Treatment','Body Lotion');
-
-                    foreach($option_values as $key => $value) 
-                    {
-                        if($value == get_post_meta($object->ID, "product_cat", true))
-                        {
-                            ?>
-                                <option selected><?php echo $value; ?></option>
-                            <?php    
-                        }
-                        else
-                        {
-                            ?>
-                                <option><?php echo $value; ?></option>
-                            <?php
-                        }
-                    }
-    echo '</select></p>';
-	echo '<p class="wp-review-field"><label>Is HG (Y): </label><input type="text" name="is_hg" value="' . esc_attr($is_hg).'"></p>';
-}
-function pinterest_image(){
-	global $post;
-	$custom = get_post_custom($post-> ID);
-	$pinterest_image = $custom["pinterest_image"][0];
-	echo '<input name="pinterest_image" value="' . esc_attr($pinterest_image).'">';
-}
-function disclaimer(){
-	global $post;
-	$custom = get_post_custom($post-> ID);
-	$disclaimer = $custom["disclaimer"][0];
-	echo '<textarea name="disclaimer" style="width:100%;height:150px;">' . esc_attr($disclaimer).'</textarea>';
-}
-function hide_post(){
-	global $post;
-	$custom = get_post_custom($post-> ID);
-	$hide_home = $custom["hide_home"][0];
-	$hide_rss = $custom["hide_rss"][0];
-	if(esc_attr($hide_home) == "true" ){
-		echo '<p><label>Hide from home page? </label> <input type="checkbox" name="hide_home" value="true" checked></p>';
-	}else{
-		echo '<p><label>Hide from home page? </label> <input type="checkbox" name="hide_home" value="true"></p>';
+		global $typenow;
+		if ( !current_user_can('edit_posts') && !current_user_can('edit_pages') ) {
+			return;
+		}
+		if( ! in_array( $typenow, array( 'post', 'page' ) ) ){
+			return;
+		}
+		if ( get_user_option('rich_editing') == 'true') {
+			add_filter("mce_external_plugins", "gp_add_tinymce_plugin");
+			add_filter('mce_buttons', 'gp_register_my_tc_button');
+		}
 	}
 
-	if(esc_attr($hide_rss) == "true" ){
-		echo '<p><label>Hide from rss feed? </label> <input type="checkbox" name="hide_rss" value="true" checked></p>';
-	}else{
-		echo '<p><label>Hide from rss feed? </label> <input type="checkbox" name="hide_rss" value="true"></p>';
+	function product_details(){
+		global $post;
+		$custom = get_post_custom($post-> ID);
+		$product_name = $custom["product_name"][0];
+		$brand_name = $custom["brand_name"][0];
+		$is_hg = $custom["is_hg"][0];
+		echo '<p class="wp-review-field"><label>Brand Name: </label><input type="text" name="brand_name" value="' . esc_attr($brand_name).'" size="50"></p>';
+		echo '<p class="wp-review-field"><label>Product Name: </label><input type="text" name="product_name" value="' . esc_attr($product_name).'" size="50"></p>';
+		echo '<p class="wp-review-field"><label>Product Category: </label><select name="product_cat">'; 
+		$option_values = array('','Cleanser','Toner', 'First Essence', 'Serum', 'Oil', 'Exfoliant', 'Moisturizer', 'Mask','Lip Balm','Foundation','Primer','Concealer','Eyeshadow','Eyeliner','Mascara','Blush','Highlighter','Lipstick','Shampoo','Conditioner','Leave-in Treatment','Body Lotion');
+
+		foreach($option_values as $key => $value) 
+		{
+			if($value == get_post_meta($object->ID, "product_cat", true))
+			{
+				?>
+				<option selected><?php echo $value; ?></option>
+				<?php    
+			}
+			else
+			{
+				?>
+				<option><?php echo $value; ?></option>
+				<?php
+			}
+		}
+		echo '</select></p>';
+		echo '<p class="wp-review-field"><label>Is HG (Y): </label><input type="text" name="is_hg" value="' . esc_attr($is_hg).'"></p>';
 	}
-}
+	function pinterest_image(){
+		global $post;
+		$custom = get_post_custom($post-> ID);
+		$pinterest_image = $custom["pinterest_image"][0];
+		echo '<input name="pinterest_image" value="' . esc_attr($pinterest_image).'">';
+	}
+	function disclaimer(){
+		global $post;
+		$custom = get_post_custom($post-> ID);
+		$disclaimer = $custom["disclaimer"][0];
+		echo '<textarea name="disclaimer" style="width:100%;height:150px;">' . esc_attr($disclaimer).'</textarea>';
+	}
+	function hide_post(){
+		global $post;
+		$custom = get_post_custom($post-> ID);
+		$hide_home = $custom["hide_home"][0];
+		$hide_rss = $custom["hide_rss"][0];
+		if(esc_attr($hide_home) == "true" ){
+			echo '<p><label>Hide from home page? </label> <input type="checkbox" name="hide_home" value="true" checked></p>';
+		}else{
+			echo '<p><label>Hide from home page? </label> <input type="checkbox" name="hide_home" value="true"></p>';
+		}
+
+		if(esc_attr($hide_rss) == "true" ){
+			echo '<p><label>Hide from rss feed? </label> <input type="checkbox" name="hide_rss" value="true" checked></p>';
+		}else{
+			echo '<p><label>Hide from rss feed? </label> <input type="checkbox" name="hide_rss" value="true"></p>';
+		}
+	}
 //save all the details!
-function save_details(){
-	global $post;
-	update_post_meta($post -> ID, "is_hg", $_POST["is_hg"]);  
-	update_post_meta($post -> ID, "product_name", $_POST["product_name"]);
-	update_post_meta($post -> ID, "product_cat", $_POST["product_cat"]);
-	update_post_meta($post -> ID, "brand_name", $_POST["brand_name"]);
-	update_post_meta($post -> ID, "pinterest_image", $_POST["pinterest_image"]);
-	update_post_meta($post -> ID, "disclaimer", $_POST["disclaimer"]);
-	if(isset($_POST["hide_home"]))
-		update_post_meta($post -> ID, "hide_home", $_POST["hide_home"]);
-	if(isset($_POST["hide_rss"]))
-		update_post_meta($post -> ID, "hide_rss", $_POST["hide_rss"]);
-}
+	function save_details(){
+		global $post;
+		update_post_meta($post -> ID, "is_hg", $_POST["is_hg"]);  
+		update_post_meta($post -> ID, "product_name", $_POST["product_name"]);
+		update_post_meta($post -> ID, "product_cat", $_POST["product_cat"]);
+		update_post_meta($post -> ID, "brand_name", $_POST["brand_name"]);
+		update_post_meta($post -> ID, "pinterest_image", $_POST["pinterest_image"]);
+		update_post_meta($post -> ID, "disclaimer", $_POST["disclaimer"]);
+		if(isset($_POST["hide_home"]))
+			update_post_meta($post -> ID, "hide_home", $_POST["hide_home"]);
+		if(isset($_POST["hide_rss"]))
+			update_post_meta($post -> ID, "hide_rss", $_POST["hide_rss"]);
+	}
 
 //add instagram post type
-function instagram_register() {
-	$args = array(
-		'label'  => 'Instagram',
-		'public' => true,
-		'publicly_queryable' => true,
-		'show_ui' => true,
-		'query_var' => true,
-		'rewrite' => true,
-		'capability_type' => 'post',
-		'hierarchical' => false,
-		'menu_position' => null,
-		'supports' => array('title','editor','thumbnail','comments','custom-fields'),
-		'taxonomies' => array('post_tag') 
-		); 
-	register_post_type( 'instagram' , $args );
-}
+	function instagram_register() {
+		$args = array(
+			'label'  => 'Instagram',
+			'public' => true,
+			'publicly_queryable' => true,
+			'show_ui' => true,
+			'query_var' => true,
+			'rewrite' => true,
+			'capability_type' => 'post',
+			'hierarchical' => false,
+			'menu_position' => null,
+			'supports' => array('title','editor','thumbnail','comments','custom-fields'),
+			'taxonomies' => array('post_tag') 
+			); 
+		register_post_type( 'instagram' , $args );
+	}
 
 //cleaning up things I don't need...use at your own risk
-function jquery_cleanup() {
-	remove_action('rest_api_init', 'wp_oembed_register_route');
-	remove_filter('oembed_dataparse', 'wp_filter_oembed_result', 10);
-	remove_action('wp_head', 'wp_oembed_add_discovery_links');
-	remove_action('wp_head', 'wp_oembed_add_host_js');
-	wp_deregister_script('jquery');
-	wp_register_script('jquery', '//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js',false, null,true);
-	wp_enqueue_script('jquery');
-}
-function gp_cleanup_scripts(){
-	if(!is_admin()){
-		remove_action('wp_head', 'wp_print_scripts'); 
-		remove_action('wp_head', 'wp_print_head_scripts', 9); 
-		remove_action('wp_head', 'wp_enqueue_scripts', 1);
-		add_action('wp_footer', 'wp_print_scripts', 5);
-		add_action('wp_footer', 'wp_enqueue_scripts', 5);
-		add_action('wp_footer', 'wp_print_head_scripts', 5); 		
+	function jquery_cleanup() {
+		remove_action('rest_api_init', 'wp_oembed_register_route');
+		remove_filter('oembed_dataparse', 'wp_filter_oembed_result', 10);
+		remove_action('wp_head', 'wp_oembed_add_discovery_links');
+		remove_action('wp_head', 'wp_oembed_add_host_js');
+		wp_deregister_script('jquery');
+		wp_register_script('jquery', '//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js',false, null,true);
+		wp_enqueue_script('jquery');
 	}
-	/* so much crap to remove... */
+	function gp_cleanup_scripts(){
+		if(!is_admin()){
+			remove_action('wp_head', 'wp_print_scripts'); 
+			remove_action('wp_head', 'wp_print_head_scripts', 9); 
+			remove_action('wp_head', 'wp_enqueue_scripts', 1);
+			add_action('wp_footer', 'wp_print_scripts', 5);
+			add_action('wp_footer', 'wp_enqueue_scripts', 5);
+			add_action('wp_footer', 'wp_print_head_scripts', 5); 		
+		}
+		/* so much crap to remove... */
 	wp_deregister_style( 'AtD_style' ); // After the Deadline
     wp_deregister_style( 'jetpack_likes' ); // Likes
     wp_deregister_style( 'jetpack_related-posts' ); //Related Posts
@@ -264,15 +264,15 @@ function gp_cleanup_scripts(){
     wp_deregister_style( 'widget-grid-and-list' ); // Top Posts widget
     wp_deregister_style( 'jetpack-widgets' ); // Widgets
     wp_dequeue_style('sharing');
-	wp_dequeue_script('devicepx');
-	if(!is_singular()){
+    wp_dequeue_script('devicepx');
+    if(!is_singular()){
 		//these shouldn't get loaded unless it's on a single page
-		wp_dequeue_script('postmatic-social-login');
-		wp_dequeue_style('postmatic-social-login');
-		wp_dequeue_script('visibility');
-		wp_dequeue_script('epoch-handlebars');
-		wp_dequeue_script('epoch');
-	}
+    	wp_dequeue_script('postmatic-social-login');
+    	wp_dequeue_style('postmatic-social-login');
+    	wp_dequeue_script('visibility');
+    	wp_dequeue_script('epoch-handlebars');
+    	wp_dequeue_script('epoch');
+    }
 }
 //adding my own stuff
 function gp_enqueue_scripts() {
@@ -285,7 +285,7 @@ function gp_enqueue_scripts() {
 }
 
 function reinsert_rss_feed() {
-    echo '<link rel="alternate" type="application/rss+xml" title="' . get_bloginfo('sitename') . ' &raquo; RSS Feed" href="' . get_bloginfo('rss2_url') . '" />';
+	echo '<link rel="alternate" type="application/rss+xml" title="' . get_bloginfo('sitename') . ' &raquo; RSS Feed" href="' . get_bloginfo('rss2_url') . '" />';
 }
 //make sure the featured image gets added to the feed
 function featuredtoRSS($content) {
@@ -306,18 +306,18 @@ function parallelize_hostnames($url, $id) {
 }
 
 function fix_multisite_srcset( $sources ){
-  foreach ( $sources as &$source ) {
-    $sources[ $source['value'] ][ 'url' ] = str_replace('http://www.geekyposh.com', 'http://cdn.geekyposh.com', $sources[ $source['value'] ][ 'url' ]);
+	foreach ( $sources as &$source ) {
+		$sources[ $source['value'] ][ 'url' ] = str_replace('//www.geekyposh.com', '//cdn.geekyposh.com', $sources[ $source['value'] ][ 'url' ]);
 	}
 	return $sources;
 }
 
 function add_itemprop_image_markup($content){
     //Replace the instance with the itemprop image markup.
-    $string = '<img';
-    $replace = '<img itemprop="image"';
-    $content = str_replace( $string, $replace, $content );
-    return $content;
+	$string = '<img';
+	$replace = '<img itemprop="image"';
+	$content = str_replace( $string, $replace, $content );
+	return $content;
 }
 
 //the default image caption shortcode output was annoying
@@ -374,66 +374,72 @@ function ingredients_init() {
 			)
 		);
 }
-function gp_feed_rss2($for_comments) {
-    $rss_template = get_template_directory() . '/rss.php';
-    if(file_exists( $rss_template ))
-        load_template( $rss_template );
-    else
-        do_feed_rss2( $for_comments ); // Call default function
-}
 
 function gp_custom_query( $query ) {
-    if ($query->is_main_query() ) {
-    	if($query->is_home()){
-    		$query->set( 'cat', '-62550');
-    		$query->set( 'meta_key', 'hide_home');
-    		$query->set( 'meta_compare', 'NOT EXISTS');
-    	}
-    	if($query->is_archive()){
-    		$query->set( 'cat', '-62550');
-    		$query->set( 'posts_per_page', 21);
-    	}
-    	if($query->is_feed()){
-    		$query->set( 'cat', '-62550,-53');
-    		$query->set( 'meta_key', 'hide_rss');
-    		$query->set( 'meta_compare', 'NOT EXISTS');
-    	}
-    	if($query->is_search()){
-    		$query->set( 'cat', '-62550,-53');
-    		$query->set( 'posts_per_page', 21);
-    		$query->set( 'post_type', 'post');
-    	}
-    }
+	if ($query->is_main_query() ) {
+		if($query->is_home()){
+			$query->set( 'cat', '-62550');
+			$query->set( 'meta_key', 'hide_home');
+			$query->set( 'meta_compare', 'NOT EXISTS');
+		}
+		if($query->is_archive()){
+			$query->set( 'cat', '-62550');
+			$query->set( 'posts_per_page', 21);
+		}
+		if($query->is_feed()){
+			$query->set( 'cat', '-62550,-53');
+			$query->set( 'meta_key', 'hide_rss');
+			$query->set( 'meta_compare', 'NOT EXISTS');
+		}
+		if($query->is_search()){
+			$query->set( 'cat', '-62550,-53');
+			$query->set( 'posts_per_page', 21);
+			$query->set( 'post_type', 'post');
+		}
+	}
 }
 function my_nofollow($content) {
-    return preg_replace_callback('/<a[^>]+/', 'my_nofollow_callback', $content);
+	return preg_replace_callback('/<a[^>]+/', 'my_nofollow_callback', $content);
 }
 function my_nofollow_callback($matches) {
-    $link = $matches[0];
-    $site_link = get_bloginfo('url');
-    if (strpos($link, 'rel') === false) {
-        $link = preg_replace("%(href=\S(?!$site_link))%i", 'rel="nofollow" $1', $link);
-    } elseif (preg_match("%href=\S(?!$site_link)%i", $link)) {
-        $link = preg_replace('/rel=\S(?!nofollow)\S*/i', 'rel="nofollow"', $link);
-    }
-    return $link;
+	$link = $matches[0];
+	$site_link = get_bloginfo('url');
+	if (strpos($link, 'rel') === false) {
+		$link = preg_replace("%(href=\S(?!$site_link))%i", 'rel="nofollow" $1', $link);
+	} elseif (preg_match("%href=\S(?!$site_link)%i", $link)) {
+		$link = preg_replace('/rel=\S(?!nofollow)\S*/i', 'rel="nofollow"', $link);
+	}
+	return $link;
 }
 function rtp_rssv_scripts() {
-    global $wp_scripts;
-    if (!is_a($wp_scripts, 'WP_Scripts'))
-        return;
-    foreach ($wp_scripts->registered as $handle => $script)
-        $wp_scripts->registered[$handle]->ver = null;
+	global $wp_scripts;
+	if (!is_a($wp_scripts, 'WP_Scripts'))
+		return;
+	foreach ($wp_scripts->registered as $handle => $script)
+		$wp_scripts->registered[$handle]->ver = null;
 }
 
 function rtp_rssv_styles() {
-    global $wp_styles;
-    if (!is_a($wp_styles, 'WP_Styles'))
-        return;
-    foreach ($wp_styles->registered as $handle => $style)
-        $wp_styles->registered[$handle]->ver = null;
+	global $wp_styles;
+	if (!is_a($wp_styles, 'WP_Styles'))
+		return;
+	foreach ($wp_styles->registered as $handle => $style)
+		$wp_styles->registered[$handle]->ver = null;
 }
-
+function gp_rss_media(){
+	echo 'xmlns:media="http://search.yahoo.com/mrss/"
+	xmlns:georss="http://www.georss.org/georss"';
+}
+function gp_attached_images(){
+	global $post;
+	?>
+	<media:content url="<?php echo wp_get_attachment_url(get_post_thumbnail_id($post->ID)); ?>" type="image/jpeg" medium="image">
+	<media:description type="plain"><![CDATA[<?php the_title_rss() ?>]]></media:description>
+	<media:copyright><?php echo get_the_author_firstname() . " " . get_the_author_lastname(); ?></media:copyright>
+</media:content>
+<content:encoded><![CDATA[<?php the_excerpt_rss() ?>]]></content:encoded>
+<?php
+}
 /** hock it up~ **/
 remove_action('wp_head', 'wp_generator'); 
 remove_action('wp_head', 'feed_links_extra', 3 );
@@ -446,12 +452,8 @@ remove_action('wp_head', 'start_post_rel_link', 10, 0 );
 remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
 remove_action('wp_head', 'print_emoji_detection_script', 7);
 remove_action('wp_print_styles', 'print_emoji_styles');
-remove_all_actions( 'do_feed_rss2' );
-add_shortcode( 'wp_caption', 'fixed_img_caption_shortcode' );
-add_shortcode( 'caption', 'fixed_img_caption_shortcode' );
 add_action('admin_enqueue_scripts', 'gp_tc_css');
 add_action('admin_head', 'admin_init');
-add_action( 'do_feed_rss2', 'gp_feed_rss2', 10, 1 );
 add_action('init', 'instagram_register');
 add_action('init', 'ingredients_init' );
 add_action( 'pre_get_posts', 'gp_custom_query', 1 );
@@ -468,8 +470,11 @@ add_filter('login_errors',create_function('$a', "return null;"));
 add_filter( 'jetpack_implode_frontend_css', '__return_false' );
 add_filter( 'jetpack_relatedposts_filter_filters', 'jetpackme_filter_exclude_category' );
 add_filter( 'jetpack_relatedposts_filter_post_context', '__return_empty_string' );
+add_filter('jpeg_quality', function($arg){return 90;});
 add_filter('mce_buttons_2', 'my_mce_buttons_2');
 add_filter( 'pre_option_link_manager_enabled', '__return_true' );
+add_filter( 'rss2_ns', 'gp_rss_media' );
+add_filter( 'rss2_item', 'gp_attached_images' );
 add_filter( 'show_admin_bar', '__return_false');
 add_filter('the_content', 'add_itemprop_image_markup', 2);
 add_filter('the_content', 'my_nofollow');
@@ -480,6 +485,8 @@ add_filter( 'tiny_mce_before_init', 'my_mce_before_init_insert_formats' );
 add_filter( 'wp', 'jetpackme_remove_rp', 20 );
 add_filter( 'wp_calculate_image_srcset', 'fix_multisite_srcset' );
 add_filter('wp_get_attachment_url', 'parallelize_hostnames', 10, 2);
+add_shortcode( 'wp_caption', 'fixed_img_caption_shortcode' );
+add_shortcode( 'caption', 'fixed_img_caption_shortcode' );
 if (!is_admin()){ 
 	add_action('init', 'jquery_cleanup'); 
 	
