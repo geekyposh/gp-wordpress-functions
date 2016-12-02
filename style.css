@@ -1,10 +1,6 @@
 @font-face {
 	font-family: 'icomoon';
-	src:url('fonts/icomoon.eot?-ntf71k');
-	src:url('fonts/icomoon.eot?#iefix-ntf71k') format('embedded-opentype'),
-		url('fonts/icomoon.woff?-ntf71k') format('woff'),
-		url('fonts/icomoon.ttf?-ntf71k') format('truetype'),
-		url('fonts/icomoon.svg?-ntf71k#icomoon') format('svg');
+	src:url('fonts/icomoon.woff') format('woff');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -17,27 +13,82 @@
 	font-variant: normal !important;
 	text-transform: none !important;
 	line-height: 1 !important;
-
+/* Enable Ligatures ================ */
+    letter-spacing: 0;
+    -webkit-font-feature-settings: "liga";
+    -moz-font-feature-settings: "liga=1";
+    -moz-font-feature-settings: "liga";
+    -ms-font-feature-settings: "liga" 1;
+    -o-font-feature-settings: "liga";
+    font-feature-settings: "liga";
 	/* Better Font Rendering =========== */
 	-webkit-font-smoothing: antialiased !important;
 	-moz-osx-font-smoothing: grayscale !important;
 }
 
-.icon-heart:before {
-	content: "\e600";
+.icon-categories:before {
+    content: "\e930";
 }
-
-.icon-warning:before {
-	content: "\e601";
+.icon-tags:before {
+    content: "\e936";
+}
+.icon-ingredients:before {
+    content: "\e9aa";
+}
+.icon-menu:before {
+    content: "\e9bd";
+}
+.icon-google-plus:before {
+    content: "\ea8b";
+}
+.icon-google-plus2:before {
+    content: "\ea8d";
+}
+.icon-facebook:before {
+    content: "\ea91";
+}
+.icon-instagram:before {
+    content: "\ea92";
+}
+.icon-wordpress:before {
+    content: "\eab4";
+}
+.icon-reddit:before {
+    content: "\eac6";
+}
+.icon-comments:before {
+    content: "\e904";
+}
+.icon-heart-broken:before {
+    content: "\e905";
+}
+.icon-facebook2:before {
+    content: "\e902";
+}
+.icon-heart:before {
+    content: "\e600";
+}
+.icon-notification:before {
+    content: "\e601";
+}
+.icon-twitter:before {
+    content: "\e605";
+}
+.icon-feed:before {
+    content: "\e606";
+}
+.icon-dribbble:before {
+    content: "\e607";
+}
+.icon-pinterest:before {
+    content: "\e608";
 }
 .icon-smile:before {
-	content: "\e609";
+    content: "\e609";
 }
-
 .icon-sad:before {
-	content: "\e60a";
+    content: "\e60a";
 }
-
 .icon-neutral:before {
-	content: "\e60b";
+    content: "\e60b";
 }
